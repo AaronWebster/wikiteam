@@ -1038,7 +1038,12 @@ def getImageNamesAPI(config={}, session=None):
                 # print jsonimages['query']
 
                 for image, props in jsonimages['query']['pages'].items():
-                    url = props['imageinfo'][0]['url']
+                    try:
+                        url = props['imageinfo'][0]['url']
+                    except KeyError, e:
+                        print 'Warning: no key "imageinfo" for %s, skipping.' % props
+                        continue
+                    
                     url = curateImageURL(config=config, url=url)
 
                     tmp_filename = ':'.join(props['title'].split(':')[1:])
